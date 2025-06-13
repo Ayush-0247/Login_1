@@ -320,82 +320,87 @@
             transform: translateX(26px);
         }
 
-        /* --- Loading Overlay Styles --- */
-        #loading-overlay { /* Changed from .loading-overlay to #loading-overlay */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to left, #71b0cd, #efeef0); /* Semi-transparent white background */
-            display: flex;
-            flex-direction: column; /* Added to stack text above dots */
-            justify-content: center;
-            align-items: center;
-            z-index: 9999; /* Ensures it's on top of other content */
-            opacity: 0; /* Start invisible */
-            visibility: hidden; /* Hide from screen readers and pointer events */
-            transition: opacity 0.5s ease, visibility 0.5s ease; /* Smooth fade in/out */
-        }
-        
-        #loading-overlay.visible {
-            opacity: 1; /* Make visible */
-            visibility: visible; /* Make interactive */
-        }
+    .loader-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgb(189, 230, 241);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
 
-       
-        .grow-fade-loader {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50px; /* Space for dots to grow */
-        }
+    .loader-overlay.visible {
+      visibility: visible;
+      opacity: 1;
+    }
 
-        .grow-fade-loader .dot {
-            width: 18px; /* Initial size of dots */
-            height: 18px;
-            background-color: #007bff; /* Starting color */
-            border-radius: 50%;
-            margin: 0 8px; /* Spacing between dots */
-            opacity: 0; /* Start invisible */
-            box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Initial subtle shadow */
-            animation: growAndFade 1.8s infinite ease-out forwards; /* Main animation for growth and fade */
-        }
+    .loading-dots-swap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      height: 60px;
+      position: relative;
+    }
 
-        /* Stagger the animation start for each dot to create the sequence */
-        .grow-fade-loader .dot:nth-child(1) { animation-delay: 0s; }
-        .grow-fade-loader .dot:nth-child(2) { animation-delay: 0.15s; }
-        .grow-fade-loader .dot:nth-child(3) { animation-delay: 0.30s; }
-        .grow-fade-loader .dot:nth-child(4) { animation-delay: 0.45s; }
-        .grow-fade-loader .dot:nth-child(5) { animation-delay: 0.60s; }
+    .dot {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #3498db;
+    }
 
-        /* Keyframes for the grow and fade animation */
-        @keyframes growAndFade {
-            0% {
-                transform: scale(0.1); /* Start very small */
-                opacity: 0; /* Start completely transparent */
-                background-color: #007bff; /* Start color */
-                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-            }
-            30% {
-                transform: scale(1); 
-                opacity: 1; 
-                background-color: #5bc0de; 
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            }
-            70% {
-                transform: scale(1.2); 
-                opacity: 0; 
-                background-color: #d9534f; 
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-            }
-            100% {
-                transform: scale(0.1);
-                opacity: 0; 
-                background-color: #007bff; 
-                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-            }
-        }
+    .dot:nth-child(1) { animation: move1 3s infinite ease-in-out; background: #3498db; }
+    .dot:nth-child(2) { animation: move2 3s infinite ease-in-out; background: #e67e22; }
+    .dot:nth-child(3) { animation: move3 3s infinite ease-in-out; background: #2ecc71; }
+    .dot:nth-child(4) { animation: move4 3s infinite ease-in-out; background: #9b59b6; }
+    .dot:nth-child(5) { animation: move5 3s infinite ease-in-out; background: #e74c3c; }
+
+    @keyframes move1 {
+      0%   { transform: translateX(-80px) scale(1); z-index: 1; }
+      25%  { transform: translateX(-40px) scale(1.3); z-index: 3; }
+      50%  { transform: translateX(0px) scale(1); z-index: 2; }
+      75%  { transform: translateX(40px) scale(0.9); z-index: 1; }
+      100% { transform: translateX(80px) scale(0.8); z-index: 0; }
+    }
+
+    @keyframes move2 {
+      0%   { transform: translateX(-40px) scale(0.9); z-index: 1; }
+      25%  { transform: translateX(0px) scale(1.3); z-index: 3; }
+      50%  { transform: translateX(40px) scale(1); z-index: 2; }
+      75%  { transform: translateX(80px) scale(0.9); z-index: 1; }
+      100% { transform: translateX(-80px) scale(0.8); z-index: 0; }
+    }
+
+    @keyframes move3 {
+      0%   { transform: translateX(0px) scale(1); z-index: 2; }
+      25%  { transform: translateX(40px) scale(0.9); z-index: 1; }
+      50%  { transform: translateX(80px) scale(0.8); z-index: 0; }
+      75%  { transform: translateX(-80px) scale(1); z-index: 1; }
+      100% { transform: translateX(-40px) scale(1.3); z-index: 3; }
+    }
+
+    @keyframes move4 {
+      0%   { transform: translateX(40px) scale(0.9); z-index: 1; }
+      25%  { transform: translateX(80px) scale(0.8); z-index: 0; }
+      50%  { transform: translateX(-80px) scale(1); z-index: 1; }
+      75%  { transform: translateX(-40px) scale(1.3); z-index: 3; }
+      100% { transform: translateX(0px) scale(1); z-index: 2; }
+    }
+
+    @keyframes move5 {
+      0%   { transform: translateX(80px) scale(0.8); z-index: 0; }
+      25%  { transform: translateX(-80px) scale(1); z-index: 1; }
+      50%  { transform: translateX(-40px) scale(1.3); z-index: 3; }
+      75%  { transform: translateX(0px) scale(1); z-index: 2; }
+      100% { transform: translateX(40px) scale(0.9); z-index: 1; }
+    }
     </style>
 </head>
 <body>
@@ -437,7 +442,7 @@
             </div>
 
             <div class="signup">
-                <p>Don't have an account? <a href="#" id="signupLink">create new account</a></p>
+                <p>Don't have an account? <a href="#" id="loginBtn">create new account</a></p>
             </div>
         </div>
 
@@ -446,16 +451,16 @@
         </div>
     </div>
 
-    <div id="loading-overlay">
-        
-        <div class="grow-fade-loader"> <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
+   <!-- Loader overlay -->
+  <div class="loader-overlay" id="loaderOverlay">
+    <div class="loading-dots-swap">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
-
+  </div>
 <script>
     function showConfirmation(message) {
         console.log(message);
@@ -539,20 +544,13 @@
     });
 
     
-    const signupLink = document.getElementById('signupLink');
-    const loadingOverlay = document.getElementById('loading-overlay');
+   document.getElementById('loginBtn').addEventListener('click', function () {
+      const loader = document.getElementById('loaderOverlay');
+      loader.classList.add('visible');
 
-    signupLink.addEventListener('click', function(event) {
-        event.preventDefault(); 
-
-      
-        loadingOverlay.classList.add('visible');
-        
-  
-        setTimeout(() => {
-            loadingOverlay.classList.remove('visible');
-            window.location.href = 'signin.html'; 
-        }, 3000); 
+      setTimeout(function () {
+        window.location.href = 'signin.html'; // Change this to your login page path
+      }, 3000);
     });
 </script>
 </body>
