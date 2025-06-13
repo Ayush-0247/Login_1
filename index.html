@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column; /* Added to stack toggle above container */
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom right, #65686d, #98b3d3);
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative; /* Needed for absolute positioning of toggle */
+            overflow: hidden; /* Prevents scrollbars if content overflows */
+        }
+
+        body.dark-mode {
+            background: linear-gradient(to bottom right, #1a1a1a, #333333);
+            color: #e2e8f0; /* Adjusted for better readability in dark mode */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 1150px;
+            height: 80vh;
+            background: linear-gradient(to bottom right, #a4aabb, #99d4ea);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            animation: scaleUp 1.5s ease-in-out;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode .container {
+            background: linear-gradient(to bottom right, #2e2e2e, #4d4d4d);
+        }
+
+        @keyframes scaleUp {
+            from {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+            to {
+                transform: scale(+1);
+                opacity: 1;
+            }
+        }
+
+        .form-section {
+            flex: 1;
+            padding: 75px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-section h1 {
+            font-size: 36px;
+            color: #333333;
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .form-section h1 {
+            color: #f5f5f5;
+        }
+
+        .form-section p {
+            font-size: 20px;
+            color: #000000;
+            margin-bottom: 30px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .form-section p {
+            color: #cccccc;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333333;
+            font-size: 20px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode label {
+            color: #f5f5f5;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+            font-size: 16px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode input[type="email"],
+        body.dark-mode input[type="password"] {
+            background: #2e2e2e;
+            border-color: #555555;
+            color: #f5f5f5;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #00ff26;
+        }
+
+        /* Default Button Styles */
+        .button {
+            margin-top: 55px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block; /* Ensures margin: auto works for centering */
+            width: 40%;
+            padding: 20px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background 0.3s ease, transform 0.3s ease; /* Added transform transition */
+        }
+
+        .button:hover {
+            background: linear-gradient(to right, #00e817, #03a513);
+            transform: scale(1.05); /* Slightly reduced scale for smoother hover */
+        }
+
+        /* Dark Mode Button Styles */
+        body.dark-mode .button {
+            background: linear-gradient(to right, #333, #444);
+            color: #f1f1f1;
+        }
+
+        body.dark-mode .button:hover {
+            background: linear-gradient(to right, #666, #888);
+            transform: scale(1.05);
+        }
+
+        .social-login {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .social-login p {
+            color: #000000; /* Default color */
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .social-login p {
+            color: #cccccc; /* Dark mode color */
+        }
+
+        .social-login img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: transform .5s ease;
+        }
+
+        .social-login img:hover {
+            transform: scale(1.2);
+        }
+
+        .signup {
+            margin-top: 20px;
+            text-align: center;
+            color: #9f3535;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .signup {
+            color: #cccccc; /* Adjusted for dark mode */
+        }
+
+        .signup a {
+            color: #6e8efb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .signup a {
+            color: #99d4ea; /* Adjusted for dark mode */
+        }
+
+        .signup a:hover {
+            text-decoration: underline;
+        }
+
+        .image-section {
+            flex: 1;
+            background: linear-gradient(to bottom left, #a4aabb, #8bcbe3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body.dark-mode .image-section {
+            background: linear-gradient(to bottom right, #1a1a1a, #2e2e2e);
+        }
+
+        .image-section img {
+            width: 550px;
+            height: auto;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0.1;
+                transform: translateY(500px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+        }
+
+        /* Toggle Switch Styles */
+        .toggle-switch-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .toggle-switch-container span {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+            transition: color 0.3s ease;
+            background-color: #4a4b4a;
+        }
+
+        body.dark-mode .toggle-switch-container span {
+            color: #f5f5f5;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 0 15px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #adc6df;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* --- Loading Overlay Styles --- */
+        #loading-overlay { /* Changed from .loading-overlay to #loading-overlay */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to left, #71b0cd, #efeef0); /* Semi-transparent white background */
+            display: flex;
+            flex-direction: column; /* Added to stack text above dots */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Ensures it's on top of other content */
+            opacity: 0; /* Start invisible */
+            visibility: hidden; /* Hide from screen readers and pointer events */
+            transition: opacity 0.5s ease, visibility 0.5s ease; /* Smooth fade in/out */
+        }
+        
+        #loading-overlay.visible {
+            opacity: 1; /* Make visible */
+            visibility: visible; /* Make interactive */
+        }
+
+       
+        .grow-fade-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px; /* Space for dots to grow */
+        }
+
+        .grow-fade-loader .dot {
+            width: 18px; /* Initial size of dots */
+            height: 18px;
+            background-color: #007bff; /* Starting color */
+            border-radius: 50%;
+            margin: 0 8px; /* Spacing between dots */
+            opacity: 0; /* Start invisible */
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Initial subtle shadow */
+            animation: growAndFade 1.8s infinite ease-out forwards; /* Main animation for growth and fade */
+        }
+
+        /* Stagger the animation start for each dot to create the sequence */
+        .grow-fade-loader .dot:nth-child(1) { animation-delay: 0s; }
+        .grow-fade-loader .dot:nth-child(2) { animation-delay: 0.15s; }
+        .grow-fade-loader .dot:nth-child(3) { animation-delay: 0.30s; }
+        .grow-fade-loader .dot:nth-child(4) { animation-delay: 0.45s; }
+        .grow-fade-loader .dot:nth-child(5) { animation-delay: 0.60s; }
+
+        /* Keyframes for the grow and fade animation */
+        @keyframes growAndFade {
+            0% {
+                transform: scale(0.1); /* Start very small */
+                opacity: 0; /* Start completely transparent */
+                background-color: #007bff; /* Start color */
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+            30% {
+                transform: scale(1); 
+                opacity: 1; 
+                background-color: #5bc0de; 
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+            70% {
+                transform: scale(1.2); 
+                opacity: 0; 
+                background-color: #d9534f; 
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            }
+            100% {
+                transform: scale(0.1);
+                opacity: 0; 
+                background-color: #007bff; 
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-switch-container">
+        <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="container">
+        <div class="form-section">
+            <h1>Log In</h1>
+
+            <p>Welcome back! Please log in to your account.</p>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required aria-label="Enter your email">
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required aria-label="Enter your password">
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="button">Login</button>
+            </form>
+
+            <div class="social-login">
+                <p>or connect with</p>
+                <a href="http://www.youtube" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google Logo"></a>
+                <a href="http://www.youtube" target="_blank"><img src="https://cdn-icons-png.flaticon.com/128/2111/2111432.png" alt="GitHub"></a>
+                <a href="http://www.youtube" target="_blank"><img src="https://cdn-icons-png.flaticon.com/128/20/20837.png" alt="Facebook"></a>
+                <a href="http://www.youtube" target="_blank"><img src="https://cdn-icons-png.flaticon.com/128/3955/3955024.png" alt="Instagram"></a>
+            </div>
+
+            <div class="signup">
+                <p>Don't have an account? <a href="#" id="signupLink">create new account</a></p>
+            </div>
+        </div>
+
+        <div class="image-section">
+            <img src="0.png" alt="Illustration">
+        </div>
+    </div>
+
+    <div id="loading-overlay">
+        
+        <div class="grow-fade-loader"> <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+<script>
+    function showConfirmation(message) {
+        console.log(message);
+        return confirm(message);
+    }
+
+    function showError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        errorElement.textContent = message;
+    }
+
+    const users = [
+        { email: "ayushraj234234@gmail.com", password: "Password", redirect: "device.html" },
+        { email: "ayush@gmail.com", password: "Key@123", redirect: "https://www.youtube.com" },
+        { email: "ayushraj234234234@gmail.com", password: "ayush@12345", redirect: "https://www.chatgpt.com" },
+        { email: "rajeshkumar2470@gmail.com", password: "Ayush@12345", redirect: "https://www.coindcx.com" }
+    
+    ];
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        showError("emailError", "");
+        showError("passwordError", "");
+
+        let foundUser = null;
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].email === email) {
+                foundUser = users[i];
+                break;
+            }
+        }
+
+        if (!email) {
+            showError("emailError", "Email is required.");
+            showConfirmation("Please enter your email and password to log in.");
+        } else if (!password) {
+            showError("passwordError", "Password is required.");
+            showConfirmation("Please enter your email and password to log in.");
+        } else if (!foundUser) {
+            showError("emailError", "Email not registered.");
+            showConfirmation("Invalid email or password. Do you want to try again?");
+        } else if (foundUser.password !== password) {
+            showError("passwordError", "Incorrect password.");
+            showConfirmation("Invalid email or password. Do you want to try again?");
+        } else {
+
+            if (showConfirmation("Do you want to log in to this account successfully?")) {
+                window.open(foundUser.redirect, "_blank");
+            }
+        }
+    });
+
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    function applyDarkMode(isDarkMode) {
+        if (isDarkMode) {
+            body.classList.add('dark-mode');
+        } else {
+            body.classList.remove('dark-mode');
+        }
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        darkModeToggle.checked = savedDarkMode; 
+        applyDarkMode(savedDarkMode); 
+    });
+
+ 
+    darkModeToggle.addEventListener('change', () => {
+        const isDarkMode = darkModeToggle.checked;
+        applyDarkMode(isDarkMode);
+        localStorage.setItem('darkMode', isDarkMode); 
+    });
+
+    
+    const signupLink = document.getElementById('signupLink');
+    const loadingOverlay = document.getElementById('loading-overlay');
+
+    signupLink.addEventListener('click', function(event) {
+        event.preventDefault(); 
+
+      
+        loadingOverlay.classList.add('visible');
+        
+  
+        setTimeout(() => {
+            loadingOverlay.classList.remove('visible');
+            window.location.href = 'signin.html'; 
+        }, 3000); 
+    });
+</script>
+</body>
+</html>
