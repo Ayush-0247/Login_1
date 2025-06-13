@@ -16,26 +16,27 @@
             min-height: 100vh; /* Use min-height for better responsiveness */
             color: #fff;
             transition: background 0.3s ease, color 0.3s ease;
+            overflow: hidden;
         }
 
         .container {
             display: flex;
             flex-wrap: wrap;
             background: #fff;
-            width: 80%; /* Adjusted for better responsiveness */
-            max-width: 1100px; /* Ensures it doesn't get too wide */
+            width: 50%;
             height: auto; /* Allow height to adjust based on content */
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             transition: all 0.5s ease-in-out;
-            background: linear-gradient(135deg, #ffffff, #303b3e);
+            
         }
         
         .signup-container {
             flex: 1;
             padding: 105px 25px 65px; /* Adjusted padding-bottom */
             transition: background 0.3s ease;
+            background: linear-gradient(135deg, #ffffff, #67929e);
         }
 
         .signup-container.dark {
@@ -93,15 +94,15 @@
 
         .signup-btn {
             margin-top: 15px;
-            margin-left: 30px; /* Adjusted margin to match form-group padding */
-            width: calc(100% - 60px); /* Adjusted width to account for margins/padding */
-            padding: 12px;
+            margin-left: 90px; /* Adjusted margin to match form-group padding */
+            width: 350px; /* Adjusted width to account for margins/padding */
+            padding: 15px;
             background: linear-gradient(to right, #6a11cb, #2575fc);
             color: #fff;
             border: none;
-            border-radius: 20px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 19px;
             font-weight: bold;
             text-transform: uppercase;
             transition: background 0.3s ease, transform 0.3s ease;
@@ -168,11 +169,12 @@
             display: flex;
             justify-content: center;
            align-items: center;
+           background: linear-gradient(135deg, #ffffff, #67929e);
         }
 
         .image-section img {
             animation: fadeIn 1.5s ease-in-out;
-            max-width: 100%; 
+            width: 100%; 
             height: auto;
             margin-top: 0; 
         }
@@ -191,33 +193,73 @@
             background: linear-gradient(to bottom right, #222, #444);
         }
 
-        /* Dark mode toggle button */
-        .dark-mode-toggle {
+                /* Toggle Switch Styles */
+        .toggle-switch-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
             position: absolute;
             top: 20px;
             right: 20px;
-            background: #fff;
-            color: #333;
-            border: none;
-            border-radius: 15px;
-            padding: 10px 15px;
-            font-size: 14px;
+            z-index: 100;
+        }
+
+        .toggle-switch-container span {
             font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+            transition: color 0.3s ease;
+            background-color: #4a4b4a;
+        }
+
+        body.dark-mode .toggle-switch-container span {
+            color: #f5f5f5;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 0 15px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 5px; 
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
         }
 
-        .dark-mode-toggle:hover {
-            background: #333;
-            color: #fff;
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
 
-        .dark-mode-toggle img {
-            width: 20px; 
-            height: auto;
+        input:checked + .slider {
+            background-color: #adc6df;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
 
         /* --- Loading Overlay Styles --- */
@@ -252,7 +294,7 @@
         .grow-fade-loader .dot {
             width: 18px; /* Initial size of dots */
             height: 18px;
-            background-color: #007bff; /* Starting color */
+            background-color: #ff0000; /* Starting color */
             border-radius: 50%;
             margin: 0 8px; /* Spacing between dots */
             opacity: 0; /* Start invisible */
@@ -297,10 +339,12 @@
     </style>
 </head>
 <body>
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()">
-        <img src="dark.png" alt="Dark Mode Toggle">
-        <span>Dark Mode</span>
-    </button>
+    <div class="toggle-switch-container">
+        <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
 
     <div class="container">
         <div class="signup-container">
@@ -327,7 +371,7 @@
                     <input type="tel" id="contact-number" name="contact-number" placeholder="Enter your contact number" required>
                 </div>
                 <button type="submit" class="signup-btn">Create new account</button>
-                <p>Already have an account? <a href="index.html" id="loginLink"> Log In</a></p>
+                <p>Already have an account? <a href="login.html" id="loginLink"> Log In</a></p>
             </form>
         </div>
         <div class="image-section">
@@ -343,67 +387,91 @@
             </div>
         </div>
     </div>
-
+ 
     <script>
-        function validateForm() {
-            var username = document.getElementById('username').value;
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirm-password').value;
-            var contact = document.getElementById('contact-number').value;
+            function validateForm() {
+                var username = document.getElementById('username').value;
+                var email = document.getElementById('email').value;
+                var password = document.getElementById('password').value;
+                var confirmPassword = document.getElementById('confirm-password').value;
+                var contact = document.getElementById('contact-number').value;
 
-            if (username === '' || email === '' || password === '' || confirmPassword === '' || contact === '') {
-                alert("All fields are required!");
-                return false;
+                if (username === '' || email === '' || password === '' || confirmPassword === '' || contact === '') {
+                    alert("All fields are required!");
+                    return false;
+                }
+
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match!");
+                    return false;
+                }
+
+                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    alert("Please enter a valid email ID.");
+                    return false;
+                }
+
+                var contactPattern = /^[0-9]{10}$/; 
+                if (!contactPattern.test(contact)) {
+                    alert("Please enter a valid 10-digit contact number.");
+                    return false;
+                }
+
+                alert("Your new account is ready! You are being redirected to login page");
+                window.open('login.html'); 
+                return false; 
+                
             }
 
-            if (password !== confirmPassword) {
-                alert("Passwords do not match!");
-                return false;
-            }
+                
+            document.addEventListener('DOMContentLoaded', () => {
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                const body = document.body;
 
-            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                alert("Please enter a valid email ID.");
-                return false;
-            }
+                // Check for saved dark mode preference
+                const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+                darkModeToggle.checked = savedDarkMode;
+                applyDarkMode(savedDarkMode);
 
-            var contactPattern = /^[0-9]{10}$/; 
-            if (!contactPattern.test(contact)) {
-                alert("Please enter a valid 10-digit contact number.");
-                return false;
-            }
+                darkModeToggle.addEventListener('change', () => {
+                    const isDarkMode = darkModeToggle.checked;
+                    applyDarkMode(isDarkMode);
+                    localStorage.setItem('darkMode', isDarkMode); // Save preference
+                });
 
-            alert("Your new account is ready!");
-            // This will open 'main.html' in a new window/tab. 
-            // If you want it in the same tab, use window.location.href = 'main.html';
-            window.open('main.html'); 
-            return false; 
-        }
+                function applyDarkMode(isDarkMode) {
+                    if (isDarkMode) {
+                        body.classList.add('dark'); // Your CSS uses 'dark' for body
+                        document.querySelector('.container').classList.add('dark');
+                        document.querySelector('.signup-container').classList.add('dark');
+                        document.querySelector('.image-section').classList.add('dark');
+                    } else {
+                        body.classList.remove('dark');
+                        document.querySelector('.container').classList.remove('dark');
+                        document.querySelector('.signup-container').classList.remove('dark');
+                        document.querySelector('.image-section').classList.remove('dark');
+                    }
+                }
+            });
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark');
-            document.querySelector('.container').classList.toggle('dark');
-            document.querySelector('.signup-container').classList.toggle('dark');
-            document.querySelector('.image-section').classList.toggle('dark');
-        }
+            document.getElementById('loginLink').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior (immediate navigation)
 
-        document.getElementById('loginLink').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default link behavior (immediate navigation)
+                const loadingOverlay = document.getElementById('loadingOverlay');
 
-            const loadingOverlay = document.getElementById('loadingOverlay');
+                // Add 'visible' class to trigger fade-in and display
+                loadingOverlay.classList.add('visible');
 
-            // Add 'visible' class to trigger fade-in and display
-            loadingOverlay.classList.add('visible');
-
-            // Delay the navigation for 3 seconds
-            setTimeout(function() {
-                window.location.href = 'index.html'; // Navigate to the login page
-            }, 3000); // 3000 milliseconds = 3 seconds
-        });
+                // Delay the navigation for 3 seconds
+                setTimeout(function() {
+                    window.location.href = 'login.html'; // Navigate to the login page
+                }, 3000); // 3000 milliseconds = 3 seconds
+            });
     </script>
 </body>
 </html>
+
 
 
 
